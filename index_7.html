@@ -1,0 +1,264 @@
+<!DOCTYPE html>
+<html lang="en-GB">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Domineo Effect — one post tips the next</title>
+<meta name="description" content="Arguments, gear and rabbit holes from Manchester. Takes on the worst posts on X, kit that's actually worth it, and videos worth your evening.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,400;12..96,600;12..96,800&family=Source+Serif+4:opsz,ital,wght@8..60,0,400;8..60,0,600;8..60,1,400&family=Space+Mono:wght@400;700&display=swap" rel="stylesheet">
+<style>
+:root{
+  --paper:#F7F5F0; --ink:#1A1714; --muted:#6E6659; --line:#DDD6C9;
+  --take:#C43425; --find:#1E7A46; --watch:#1D5FBF;
+  --take-soft:#F8E4E1; --find-soft:#E2F0E7; --watch-soft:#E1EAF8;
+}
+*{box-sizing:border-box;margin:0;padding:0}
+html{scroll-behavior:smooth}
+body{background:var(--paper);color:var(--ink);font-family:"Source Serif 4",Georgia,serif;font-size:17px;line-height:1.6}
+a{color:inherit}
+.wrap{max-width:1080px;margin:0 auto;padding:0 20px}
+.mono{font-family:"Space Mono",monospace}
+.disp{font-family:"Bricolage Grotesque",system-ui,sans-serif}
+
+/* header */
+header.site{border-bottom:2px solid var(--ink);position:sticky;top:0;background:var(--paper);z-index:10}
+header.site .wrap{display:flex;align-items:center;justify-content:space-between;padding-top:14px;padding-bottom:14px}
+.logo{font-family:"Bricolage Grotesque",sans-serif;font-weight:800;letter-spacing:.04em;text-decoration:none;font-size:1.05rem}
+nav.main a{font-family:"Space Mono",monospace;font-size:.8rem;text-decoration:none;margin-left:18px;text-transform:lowercase}
+nav.main a:hover{text-decoration:underline}
+
+/* hero */
+.hero{padding:56px 0 40px;border-bottom:1px solid var(--line)}
+.kicker{font-family:"Space Mono",monospace;font-size:.75rem;letter-spacing:.08em;text-transform:uppercase;color:var(--muted)}
+.hero h1{font-family:"Bricolage Grotesque",sans-serif;font-weight:800;font-size:clamp(2.4rem,6vw,4.2rem);line-height:1.02;margin:14px 0 18px}
+.hero p.lede{max-width:620px;font-size:1.08rem}
+.dominoes{display:flex;gap:10px;margin-top:34px;height:64px;align-items:flex-end}
+.domino{width:16px;height:56px;background:var(--ink);border-radius:3px;transform-origin:bottom right;animation:tip 3.4s ease-in-out infinite}
+.domino:nth-child(2){animation-delay:.15s}.domino:nth-child(3){animation-delay:.3s}
+.domino:nth-child(4){animation-delay:.45s}.domino:nth-child(5){animation-delay:.6s}
+.domino:nth-child(6){animation-delay:.75s}.domino:nth-child(7){animation-delay:.9s}
+.domino:nth-child(3n){background:var(--take)}.domino:nth-child(3n+1){background:var(--find)}.domino:nth-child(3n+2){background:var(--watch)}
+@keyframes tip{0%,10%{transform:rotate(0)}30%,60%{transform:rotate(72deg)}80%,100%{transform:rotate(0)}}
+@media (prefers-reduced-motion: reduce){.domino{animation:none;transform:rotate(24deg)}}
+
+/* featured */
+.featured{padding:48px 0;border-bottom:1px solid var(--line)}
+.featured .grid{display:grid;grid-template-columns:1fr 1.3fr;gap:28px;align-items:start}
+.xcard{background:#fff;border:1px solid var(--line);border-radius:10px;padding:22px}
+.xcard .who{font-family:"Bricolage Grotesque",sans-serif;font-weight:600}
+.xcard .handle{font-family:"Space Mono",monospace;font-size:.78rem;color:var(--muted)}
+.xcard blockquote{margin:14px 0;font-size:1.05rem;font-style:italic}
+.xcard .meta{font-family:"Space Mono",monospace;font-size:.72rem;color:var(--muted)}
+.stream-label{display:inline-block;font-family:"Space Mono",monospace;font-size:.72rem;letter-spacing:.1em;text-transform:uppercase;padding:3px 9px;border-radius:4px;margin-bottom:12px}
+.label-take{background:var(--take-soft);color:var(--take)}
+.label-find{background:var(--find-soft);color:var(--find)}
+.label-watch{background:var(--watch-soft);color:var(--watch)}
+.featured h2{font-family:"Bricolage Grotesque",sans-serif;font-weight:800;font-size:clamp(1.5rem,3.4vw,2.2rem);line-height:1.12;margin-bottom:12px}
+.featured .standfirst{color:var(--ink);margin-bottom:16px}
+.pips{display:flex;gap:5px;align-items:center;margin:14px 0}
+.pips span{width:11px;height:11px;border-radius:50%;border:1.5px solid var(--take)}
+.pips span.on{background:var(--take)}
+.pips .pips-label{font-family:"Space Mono",monospace;font-size:.72rem;color:var(--muted);margin-left:8px;border:0;width:auto;height:auto;border-radius:0}
+.readmore{font-family:"Space Mono",monospace;font-size:.85rem;color:var(--take);text-decoration:none;font-weight:700}
+.readmore:hover{text-decoration:underline}
+
+/* feed */
+.feed{padding:48px 0}
+.feed h3.section{font-family:"Space Mono",monospace;font-size:.8rem;letter-spacing:.12em;text-transform:uppercase;color:var(--muted);margin-bottom:22px}
+.cards{display:grid;grid-template-columns:repeat(3,1fr);gap:18px}
+.card{display:block;text-decoration:none;background:#fff;border:1px solid var(--line);border-radius:10px;padding:20px;border-top:4px solid var(--line);transition:transform .12s ease}
+.card:hover{transform:translateY(-3px)}
+.card.take{border-top-color:var(--take)}
+.card.find{border-top-color:var(--find)}
+.card.watch{border-top-color:var(--watch)}
+.card .date{font-family:"Space Mono",monospace;font-size:.7rem;color:var(--muted)}
+.card h4{font-family:"Bricolage Grotesque",sans-serif;font-weight:600;font-size:1.08rem;line-height:1.25;margin:8px 0 8px}
+.card p{font-size:.92rem;color:#3d3831}
+.card .dur{display:inline-block;font-family:"Space Mono",monospace;font-size:.7rem;background:var(--watch-soft);color:var(--watch);padding:2px 7px;border-radius:4px;margin-top:10px}
+.card .aff{display:block;font-family:"Space Mono",monospace;font-size:.68rem;color:var(--muted);margin-top:12px;border-top:1px dashed var(--line);padding-top:8px}
+.card h4 a{color:inherit;text-decoration:none}
+.card h4 a:hover{text-decoration:underline}
+.card .links{margin-top:10px}
+.card .links a{font-family:"Space Mono",monospace;font-size:.74rem;font-weight:700;color:var(--find);text-decoration:none;margin-right:14px}
+.card .links a:hover{text-decoration:underline}
+.card.watch .links a{color:var(--watch)}
+.embed{position:relative;aspect-ratio:16/9;border-radius:6px;overflow:hidden;background:#000;margin-bottom:12px}
+.embed iframe{position:absolute;inset:0;width:100%;height:100%;border:0}
+.card.watch .links a{color:var(--watch)}
+.embed{position:relative;aspect-ratio:16/9;border-radius:7px;overflow:hidden;background:#000;margin-bottom:14px}
+.embed iframe{position:absolute;inset:0;width:100%;height:100%;border:0}
+
+/* newsletter */
+.chain{border-top:2px solid var(--ink);border-bottom:2px solid var(--ink);padding:44px 0;text-align:center;background:#fff}
+.chain h3{font-family:"Bricolage Grotesque",sans-serif;font-weight:800;font-size:clamp(1.6rem,4vw,2.4rem)}
+.chain p{max-width:520px;margin:12px auto 20px;color:var(--muted)}
+.chain a.btn{display:inline-block;font-family:"Space Mono",monospace;font-size:.9rem;background:var(--ink);color:var(--paper);padding:12px 26px;border-radius:6px;text-decoration:none}
+.chain a.btn:hover{opacity:.85}
+
+/* about + footer */
+.about{padding:40px 0;border-bottom:1px solid var(--line);max-width:680px}
+.about h3{font-family:"Bricolage Grotesque",sans-serif;font-weight:800;margin-bottom:10px}
+footer.site{padding:34px 0 50px;color:var(--muted)}
+footer.site .top{display:flex;justify-content:space-between;align-items:center;margin-bottom:18px}
+footer.site nav a{font-family:"Space Mono",monospace;font-size:.78rem;text-decoration:none;margin-left:16px}
+.disclosure{font-size:.85rem;max-width:760px}
+
+@media (max-width:840px){
+  .featured .grid{grid-template-columns:1fr}
+  .cards{grid-template-columns:1fr 1fr}
+}
+@media (max-width:560px){
+  .cards{grid-template-columns:1fr}
+  nav.main a{margin-left:12px}
+}
+a:focus-visible,.card:focus-visible,.chain a.btn:focus-visible{outline:3px solid var(--watch);outline-offset:2px}
+</style>
+</head>
+<body>
+
+<header class="site">
+  <div class="wrap">
+    <a class="logo" href="/">DOMINEO EFFECT</a>
+    <nav class="main">
+      <a href="#feed">takes</a><a href="#feed">finds</a><a href="#feed">watch</a><a href="#about">about</a>
+    </nav>
+  </div>
+</header>
+
+<section class="hero">
+  <div class="wrap">
+    <p class="kicker">Manchester, UK — arguments, gear and rabbit holes</p>
+    <h1>One post tips the next.</h1>
+    <p class="lede">I read the worst takes on X so you don't have to, argue back properly, share the kit I actually rate and surface the videos worth your evening.</p>
+    <div class="dominoes" aria-hidden="true">
+      <div class="domino"></div><div class="domino"></div><div class="domino"></div><div class="domino"></div><div class="domino"></div><div class="domino"></div><div class="domino"></div>
+    </div>
+  </div>
+</section>
+
+<section class="featured">
+  <div class="wrap">
+    <div class="grid">
+      <div class="xcard">
+        <p class="who">Mustafa Suleyman</p>
+        <p class="handle">Microsoft AI CEO · said to the Financial Times, endlessly reposted on X</p>
+        <blockquote>Most white-collar tasks — lawyer, accountant, project manager, marketing — will be <strong>"fully automated by an AI"</strong> within the next 12 to 18 months.</blockquote>
+        <p class="meta">The claim currently powering a thousand "your job is already dead" threads</p>
+      </div>
+      <div>
+        <span class="stream-label label-take">Take</span>
+        <h2>No, most white-collar work is not "fully automated" by next Christmas</h2>
+        <p class="standfirst">The strongest counter-evidence comes from the company that bet hardest on the idea. Meta cut 8,000 people and built a division literally called Agent Transformation — then in July its CEO admitted agent progress hasn't accelerated as expected. What the honest data says, and what it means if you work in ops or service delivery.</p>
+        <div class="pips" aria-label="Impact rating: 5 out of 6">
+          <span class="on"></span><span class="on"></span><span class="on"></span><span class="on"></span><span class="on"></span><span></span>
+          <span class="pips-label">impact 5/6</span>
+        </div>
+        <a class="readmore" href="take-ai-jobs.html">Read the full argument →</a>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="feed" id="feed">
+  <div class="wrap">
+    <h3 class="section">Latest</h3>
+    <div class="cards">
+
+      <a class="card take" href="#">
+        <span class="date">TAKE · 18 JUL</span>
+        <h4>Hinton's warning is the one worth taking seriously</h4>
+        <p>The "godfather of AI" says 2026 brings capability to replace "many, many jobs" — and he isn't selling a course. What to actually do with that if you work in ops, instead of "learn to prompt".</p>
+      </a>
+
+      <article class="card find">
+        <span class="date">FIND · 18 JUL</span>
+        <h4><a href="https://www.techradar.com/tech/the-best-tech-of-2026-so-far-the-21-finest-gadgets-weve-tested-this-year" target="_blank" rel="noopener">A brand-new cassette player with Bluetooth, in 2026</a></h4>
+        <p>Maxell's wireless cassette player made TechRadar's best of the year so far — nostalgia hardware done nearly right, flaky Bluetooth and all. If you're here for the iPod restorations, this is your lane.</p>
+        <p class="links"><a href="https://www.techradar.com/tech/the-best-tech-of-2026-so-far-the-21-finest-gadgets-weve-tested-this-year" target="_blank" rel="noopener">the review →</a><a href="https://www.amazon.co.uk/s?k=maxell+wireless+cassette+player" target="_blank" rel="noopener">find it on Amazon →</a></p>
+        <span class="aff">links not affiliated — yet</span>
+      </article>
+
+      <article class="card watch">
+        <span class="date">WATCH · 18 JUL</span>
+        <div class="embed"><iframe src="https://www.youtube-nocookie.com/embed/XW1F79sfftA" title="The Great Southern Country — Lachlan Morton's Around Australia Record" loading="lazy" referrerpolicy="strict-origin-when-cross-origin" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe></div>
+        <h4>14,200 km around Australia in 30 days — the film</h4>
+        <p>The Great Southern Country follows Lachlan Morton's Around Australia Record: roughly 450 km a day for a month, filmed by his brother. The best look inside ultra-endurance riding you'll find.</p>
+        <p class="links"><a href="https://www.youtube.com/watch?v=XW1F79sfftA" target="_blank" rel="noopener">watch on YouTube →</a></p>
+        <span class="dur">1:47:42</span>
+      </article>
+
+      <article class="card find">
+        <span class="date">FIND · 18 JUL</span>
+        <h4><a href="https://www.cyclingweekly.com/group-tests/cycling-gps-units-buyers-guide-181254" target="_blank" rel="noopener">Garmin Edge 850: the bike computer to beat, with one gripe</a></h4>
+        <p>Cycling Weekly calls it the most refined mid-size unit going — new bell, real-time traffic and pothole warnings. But no solar option, which the 840 had, and rivals have closed the battery gap.</p>
+        <p class="links"><a href="https://www.cyclingweekly.com/group-tests/cycling-gps-units-buyers-guide-181254" target="_blank" rel="noopener">the review →</a><a href="https://www.amazon.co.uk/s?k=garmin+edge+850" target="_blank" rel="noopener">find it on Amazon →</a></p>
+        <span class="aff">links not affiliated — yet</span>
+      </article>
+
+      <article class="card watch">
+        <span class="date">WATCH · 18 JUL</span>
+        <div class="embed"><iframe src="https://www.youtube-nocookie.com/embed/Ab02a_EKtcg" title="Odd Tinkering — 111 Years Old Antique Toaster Restoration" loading="lazy" referrerpolicy="strict-origin-when-cross-origin" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe></div>
+        <h4>A 111-year-old toaster, restored in total silence</h4>
+        <p>Odd Tinkering is a Finnish channel with no talking and no music — just knackered things becoming beautiful again. Start with the antique toaster restoration, lose your evening to the back catalogue.</p>
+        <p class="links"><a href="https://www.youtube.com/watch?v=Ab02a_EKtcg" target="_blank" rel="noopener">watch on YouTube →</a></p>
+      </article>
+
+      <article class="card find">
+        <span class="date">FIND · 18 JUL</span>
+        <h4><a href="https://www.techradar.com/home/top-tech-of-the-month-the-best-new-gadgets-weve-tested-for-july-2026" target="_blank" rel="noopener">The tiny Dyson fan that earned full marks in a heatwave</a></h4>
+        <p>The HushJet Mini Cool — a handheld fan with up to 6.5 hours of cooling per charge — just took a five-star TechRadar review, credited with saving their Home editor's sanity during the UK heatwave. Timing is everything.</p>
+        <p class="links"><a href="https://www.techradar.com/home/top-tech-of-the-month-the-best-new-gadgets-weve-tested-for-july-2026" target="_blank" rel="noopener">the review →</a><a href="https://www.amazon.co.uk/s?k=dyson+hushjet+mini+cool" target="_blank" rel="noopener">find it on Amazon →</a></p>
+        <span class="aff">links not affiliated — yet</span>
+      </article>
+
+      <article class="card find">
+        <span class="date">FIND · 18 JUL</span>
+        <h4><a href="https://www.techradar.com/tech/top-tech-of-the-month-the-best-new-gadgets-weve-tested-for-june-2026" target="_blank" rel="noopener">A wireless mic with an E-ink screen for your branding</a></h4>
+        <p>The Insta360 Mic Pro carries an industry-first customisable E-ink display — put your logo on the transmitter — and blew TechRadar's reviewers away in June. If you're filming restorations or rides, this is clever kit.</p>
+        <p class="links"><a href="https://www.techradar.com/tech/top-tech-of-the-month-the-best-new-gadgets-weve-tested-for-june-2026" target="_blank" rel="noopener">the review →</a><a href="https://www.amazon.co.uk/s?k=insta360+mic+pro" target="_blank" rel="noopener">find it on Amazon →</a></p>
+        <span class="aff">links not affiliated — yet</span>
+      </article>
+
+      <article class="card find">
+        <span class="date">FIND · 18 JUL</span>
+        <h4><a href="https://www.litelok.com/blogs/news/21-cool-bike-accessories-and-bike-gadgets-for-2021" target="_blank" rel="noopener">LITELOK X1 — the £149.99 answer to angle grinders</a></h4>
+        <p>Barronium armour over hardened steel, Sold Secure Diamond certified. In Manchester, where bike theft is a contact sport, this is the spend that protects the bigger spend.</p>
+        <p class="links"><a href="https://www.litelok.com/blogs/news/21-cool-bike-accessories-and-bike-gadgets-for-2021" target="_blank" rel="noopener">from LITELOK →</a><a href="https://www.amazon.co.uk/s?k=litelok+x1" target="_blank" rel="noopener">find it on Amazon →</a></p>
+        <span class="aff">links not affiliated — yet</span>
+      </article>
+
+    </div>
+  </div>
+</section>
+
+<section class="chain">
+  <div class="wrap">
+    <h3>The chain reaction, weekly.</h3>
+    <p>One take, one find, one video — every Friday. No spam, no 47-part welcome sequence, unsubscribe whenever.</p>
+    <a class="btn" href="#">Join the chain</a>
+  </div>
+</section>
+
+<section class="about" id="about">
+  <div class="wrap">
+    <h3>About</h3>
+    <p>Dom. Manchester. Twelve-plus years keeping IT services running, which turns out to be excellent training for spotting confident nonsense. This site is where the arguments, the gear and the rabbit holes end up.</p>
+  </div>
+</section>
+
+<footer class="site">
+  <div class="wrap">
+    <div class="top">
+      <span class="logo">DOMINEO EFFECT</span>
+      <nav>
+        <a href="#feed">takes</a><a href="#feed">finds</a><a href="#feed">watch</a><a href="#about">contact</a>
+      </nav>
+    </div>
+    <p class="disclosure">Disclosure: some links on this site are affiliate links, marked as such on every post. If you buy through one I may earn a commission at no extra cost to you. Where discount codes appear, they're verified at time of posting. Opinions are entirely my own and never paid for — that's rather the point of the site.</p>
+  </div>
+</footer>
+
+</body>
+</html>
