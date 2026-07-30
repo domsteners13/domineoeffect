@@ -1,0 +1,738 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<meta name="robots" content="noindex,nofollow">
+<title>New post &#183; Domineo Effect</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,600;12..96,800&family=Source+Serif+4:opsz,wght@8..60,400&family=Space+Mono:wght@400;700&display=swap" rel="stylesheet">
+<style>
+:root{
+  --paper:#12100E; --ink:#F2EBDE; --muted:#8B8378; --line:#2A2622;
+  --panel:#191614; --bone-a:#F2EBDE; --bone-b:#DCD2C0;
+  --take:#E9584A; --find:#43B979; --watch:#6AA1F7;
+  --accent:var(--find);
+  --display:"Bricolage Grotesque",system-ui,sans-serif;
+  --body:"Source Serif 4",Georgia,serif;
+  --mono:"Space Mono",ui-monospace,monospace;
+}
+*{box-sizing:border-box}
+body{
+  margin:0;background:var(--paper);color:var(--ink);font-family:var(--body);
+  background-image:radial-gradient(rgba(242,235,222,.045) 1px,transparent 1px);
+  background-size:22px 22px;
+}
+.wrap{max-width:1080px;margin:0 auto;padding:34px 20px 90px}
+header{display:flex;align-items:center;gap:14px;border-bottom:1px solid var(--line);padding-bottom:20px;margin-bottom:26px}
+h1{font-family:var(--display);font-weight:800;font-size:clamp(26px,4vw,38px);margin:0;letter-spacing:-.02em}
+.sub{font-family:var(--mono);font-size:12px;color:var(--muted);margin:5px 0 0;letter-spacing:.04em}
+.cols{display:grid;grid-template-columns:1fr 1fr;gap:30px;align-items:start}
+@media (max-width:840px){.cols{grid-template-columns:1fr;gap:26px}}
+fieldset{border:0;padding:0;margin:0 0 20px}
+label{display:block;font-family:var(--mono);font-size:11px;letter-spacing:.1em;text-transform:uppercase;color:var(--muted);margin:0 0 6px}
+input[type=text],input[type=url],textarea,select{
+  width:100%;background:var(--panel);border:1px solid var(--line);color:var(--ink);
+  border-radius:9px;padding:11px 12px;font-family:var(--body);font-size:15px
+}
+textarea{resize:vertical;min-height:96px;line-height:1.5}
+input:focus-visible,textarea:focus-visible,select:focus-visible,button:focus-visible{outline:2px solid var(--accent);outline-offset:2px}
+.streams{display:flex;gap:8px;margin-bottom:22px;flex-wrap:wrap}
+.streams button{
+  flex:1;min-width:96px;background:var(--panel);border:1px solid var(--line);color:var(--muted);
+  font-family:var(--mono);font-size:12px;letter-spacing:.12em;text-transform:uppercase;
+  padding:12px 8px;border-radius:9px;cursor:pointer;transition:border-color .15s,color .15s
+}
+.streams button[aria-pressed=true]{color:var(--paper);background:var(--accent);border-color:var(--accent);font-weight:700}
+.row{display:grid;grid-template-columns:1fr 1fr;gap:12px}
+@media (max-width:520px){.row{grid-template-columns:1fr}}
+.hint{font-family:var(--mono);font-size:11px;color:var(--muted);margin:6px 0 0;line-height:1.5}
+.hidden{display:none !important}
+
+/* ---- domino rack: the free face-pairs for this stream ---- */
+.rack{border:1px solid var(--line);border-radius:12px;padding:16px;background:var(--panel)}
+.rack-head{display:flex;justify-content:space-between;align-items:baseline;gap:10px;margin-bottom:12px}
+.rack-head strong{font-family:var(--mono);font-size:11px;letter-spacing:.1em;text-transform:uppercase;font-weight:700}
+.count{font-family:var(--mono);font-size:11px;color:var(--muted)}
+.count.low{color:var(--take)}
+.rack-tiles{display:flex;flex-wrap:wrap;gap:10px}
+.pick{background:none;border:0;padding:3px;cursor:pointer;border-radius:8px;line-height:0}
+.pick[aria-pressed=true]{box-shadow:0 0 0 2px var(--accent)}
+.tile{
+  display:inline-grid;grid-template-rows:1fr 1fr;width:28px;height:50px;
+  background:linear-gradient(160deg,var(--bone-a),var(--bone-b));
+  border-radius:5px;overflow:hidden;box-shadow:0 2px 5px rgba(0,0,0,.5)
+}
+.tile .face{position:relative;background-repeat:no-repeat}
+.tile .face+.face{border-top:1px solid rgba(18,16,14,.28)}
+.f1{background-image:var(--c)}
+.f2{background-image:var(--tl),var(--br)}
+.f3{background-image:var(--tl),var(--c),var(--br)}
+.f4{background-image:var(--tl),var(--tr),var(--bl),var(--br)}
+.f5{background-image:var(--tl),var(--tr),var(--c),var(--bl),var(--br)}
+.f6{background-image:var(--tl),var(--tr),var(--ml),var(--mr),var(--bl),var(--br)}
+.tile .face{
+  --pip:var(--accent);
+  --c:radial-gradient(circle at 50% 50%,var(--pip) 0 2.1px,transparent 2.2px);
+  --tl:radial-gradient(circle at 31% 27%,var(--pip) 0 2.1px,transparent 2.2px);
+  --tr:radial-gradient(circle at 69% 27%,var(--pip) 0 2.1px,transparent 2.2px);
+  --ml:radial-gradient(circle at 31% 50%,var(--pip) 0 2.1px,transparent 2.2px);
+  --mr:radial-gradient(circle at 69% 50%,var(--pip) 0 2.1px,transparent 2.2px);
+  --bl:radial-gradient(circle at 31% 73%,var(--pip) 0 2.1px,transparent 2.2px);
+  --br:radial-gradient(circle at 69% 73%,var(--pip) 0 2.1px,transparent 2.2px);
+}
+.empty-rack{font-family:var(--mono);font-size:11px;color:var(--take);line-height:1.6}
+
+/* ---- preview ---- */
+.preview{border:1px solid var(--line);border-radius:12px;padding:18px;background:var(--panel);position:relative}
+.pv-card{border-left:3px solid var(--accent);padding:4px 0 4px 15px;position:relative}
+.pv-date{font-family:var(--mono);font-size:11px;letter-spacing:.1em;color:var(--muted);text-transform:uppercase}
+.pv-h{font-family:var(--display);font-weight:800;font-size:20px;line-height:1.22;margin:8px 0;color:var(--accent);letter-spacing:-.01em}
+.pv-b{font-size:15px;line-height:1.6;margin:0 0 8px;color:#D8D0C4}
+.pv-links{font-family:var(--mono);font-size:12px;color:var(--watch)}
+.pv-img{width:100%;border-radius:9px;margin:10px 0;display:block}
+.pv-embed{aspect-ratio:16/9;background:#0C0A09;border:1px dashed var(--line);border-radius:9px;display:grid;place-items:center;font-family:var(--mono);font-size:11px;color:var(--muted);margin:10px 0}
+
+/* ---- output ---- */
+.out-head{display:flex;justify-content:space-between;align-items:center;gap:12px;margin:0 0 10px}
+pre{
+  background:#0C0A09;border:1px solid var(--line);border-radius:10px;padding:14px;
+  font-family:var(--mono);font-size:12px;line-height:1.65;color:#CFC7BA;
+  overflow:auto;max-height:340px;margin:0;white-space:pre;-webkit-overflow-scrolling:touch
+}
+.btn{
+  font-family:var(--mono);font-size:12px;letter-spacing:.06em;text-transform:uppercase;
+  background:var(--accent);color:var(--paper);border:0;border-radius:8px;padding:11px 16px;
+  cursor:pointer;font-weight:700
+}
+.btn.ghost{background:transparent;color:var(--ink);border:1px solid var(--line)}
+.steps{border:1px solid var(--line);border-radius:12px;padding:16px 18px;margin-top:22px;background:var(--panel)}
+.steps h3{font-family:var(--mono);font-size:11px;letter-spacing:.1em;text-transform:uppercase;margin:0 0 10px;color:var(--muted)}
+.steps ol{margin:0;padding-left:18px;font-size:14px;line-height:1.75}
+.steps code{font-family:var(--mono);font-size:12px;background:#0C0A09;padding:2px 5px;border-radius:4px}
+.warn{color:var(--take)}
+/* ---- mode toggle + card list ---- */
+.modes{display:flex;gap:8px;margin-bottom:20px}
+.modes button{
+  flex:1;background:transparent;border:1px solid var(--line);color:var(--muted);
+  font-family:var(--mono);font-size:11px;letter-spacing:.08em;text-transform:uppercase;
+  padding:10px 8px;border-radius:9px;cursor:pointer
+}
+.modes button[aria-pressed=true]{color:var(--ink);border-color:var(--ink)}
+.cardlist{display:grid;gap:8px}
+.cardpick{
+  display:flex;gap:12px;align-items:center;text-align:left;width:100%;
+  background:var(--panel);border:1px solid var(--line);border-radius:10px;
+  padding:10px 12px;cursor:pointer;color:var(--ink);font-family:inherit
+}
+.cardpick[aria-pressed=true]{border-color:var(--accent);box-shadow:inset 3px 0 0 var(--accent)}
+.cardpick .meta{font-family:var(--mono);font-size:10px;letter-spacing:.08em;color:var(--muted);text-transform:uppercase}
+.cardpick .ttl{font-size:14px;line-height:1.35;display:block;margin-top:3px}
+.cardpick .age{font-family:var(--mono);font-size:10px;color:var(--muted);margin-left:auto;white-space:nowrap}
+.tabs{display:flex;gap:6px}
+.tab{
+  font-family:var(--mono);font-size:11px;text-transform:uppercase;letter-spacing:.06em;
+  background:transparent;border:1px solid var(--line);color:var(--muted);
+  padding:9px 13px;border-radius:8px;cursor:pointer
+}
+.tab[aria-pressed=true]{color:var(--paper);background:var(--ink);border-color:var(--ink);font-weight:700}
+@media (prefers-reduced-motion:reduce){*{transition:none !important;animation:none !important}}
+</style>
+</head>
+<body>
+<main class="wrap">
+  <header>
+    <span class="tile" aria-hidden="true"><span class="face f6"></span><span class="face f6"></span></span>
+    <div>
+      <h1>New post</h1>
+      <p class="sub">Builds one card for the Domineo Effect homepage</p>
+    </div>
+  </header>
+
+  <div class="streams" role="group" aria-label="Post type">
+    <button type="button" data-stream="take" aria-pressed="false">Take</button>
+    <button type="button" data-stream="find" aria-pressed="true">Find</button>
+    <button type="button" data-stream="watch" aria-pressed="false">Watch</button>
+  </div>
+
+  <div class="modes" role="group" aria-label="Add or replace">
+    <button type="button" data-mode="add" aria-pressed="true">Add a new card</button>
+    <button type="button" data-mode="replace" aria-pressed="false">Replace an old card</button>
+  </div>
+
+  <section id="replace-panel" class="hidden" style="margin-bottom:26px">
+    <label>Which card does this replace?</label>
+    <div class="cardlist" id="cardlist"></div>
+    <p class="hint" id="cardlist-note"></p>
+  </section>
+
+  <div class="cols">
+    <!-- ============ LEFT: the form ============ -->
+    <section>
+      <fieldset>
+        <label for="headline">Headline</label>
+        <input type="text" id="headline" placeholder="The tiny fan that earned full marks in a heatwave">
+      </fieldset>
+
+      <fieldset>
+        <label for="body">Body</label>
+        <textarea id="body" placeholder="Two or three sentences on why it matters.&#10;&#10;Leave a blank line to start a new paragraph."></textarea>
+        <p class="hint">Type dashes, quotes and &#163; normally &#8212; they get converted to safe codes automatically.</p>
+      </fieldset>
+
+      <fieldset id="f-video" class="hidden">
+        <label for="video">YouTube link or ID</label>
+        <input type="text" id="video" placeholder="https://www.youtube.com/watch?v=Ab02a_EKtcg">
+      </fieldset>
+
+      <fieldset id="f-article" class="hidden">
+        <label for="article">Article file</label>
+        <input type="text" id="article" placeholder="take-something.html">
+        <p class="hint">Named from your headline. Create it at <code>/new/main</code> by copying take-hinton.html.</p>
+      </fieldset>
+
+      <fieldset>
+        <label for="links">Links &#8212; one per line, as <span style="text-transform:none">label | url</span></label>
+        <textarea id="links" style="min-height:74px"></textarea>
+      </fieldset>
+
+      <fieldset>
+        <label for="photo">Photo (optional)</label>
+        <input type="file" id="photo" accept="image/*" style="font-family:var(--mono);font-size:12px;color:var(--muted)">
+        <div id="photo-info" class="hint"></div>
+        <div class="row" id="f-alt" style="margin-top:10px">
+          <div>
+            <label for="alt">Describe the photo</label>
+            <input type="text" id="alt" placeholder="For screen readers">
+          </div>
+          <div>
+            <label for="imgname">Saves as</label>
+            <input type="text" id="imgname" placeholder="images/filename.jpg">
+          </div>
+        </div>
+      </fieldset>
+
+      <fieldset>
+        <label for="date">Date on the card</label>
+        <input type="text" id="date" style="max-width:170px">
+      </fieldset>
+    </section>
+
+    <!-- ============ RIGHT: dominoes + preview ============ -->
+    <section>
+      <div class="rack" style="margin-bottom:20px">
+        <div class="rack-head">
+          <strong>Domino</strong>
+          <span class="count" id="rack-count">checking&#8230;</span>
+        </div>
+        <div class="rack-tiles" id="rack"></div>
+        <p class="hint" id="rack-note"></p>
+      </div>
+
+      <div class="preview">
+        <p class="sub" style="margin:0 0 12px">Preview</p>
+        <div class="pv-card" id="pv"></div>
+      </div>
+    </section>
+  </div>
+
+  <section style="margin-top:30px">
+    <div class="out-head">
+      <div class="tabs" role="group" aria-label="What to copy">
+        <button class="tab" type="button" data-view="snippet" aria-pressed="true">Just the card</button>
+        <button class="tab" type="button" data-view="file" aria-pressed="false">Whole file</button>
+      </div>
+      <div style="display:flex;gap:8px">
+        <button class="btn ghost" type="button" id="reset">Start over</button>
+        <button class="btn" type="button" id="copy">Copy</button>
+      </div>
+    </div>
+    <pre id="out"></pre>
+    <p class="hint" id="out-note"></p>
+  </section>
+
+  <div class="steps">
+    <h3>Then</h3>
+    <ol>
+      <li id="step-photo" class="hidden">Upload the photo: GitHub &#8594; <strong>Add file</strong> &#8594; <strong>Upload files</strong>, drop it into the <code>images</code> folder, commit.</li>
+      <li id="step-article" class="hidden">Create the article at <code>/new/main</code>, copying <code>take-hinton.html</code> and swapping the words.</li>
+      <li id="step-snippet">Open <code>index.html</code> for editing, paste this directly under <code>&lt;div class="cards"&gt;</code>.</li>
+      <li id="step-file" class="hidden">Open <code>index.html</code> for editing, select everything already there (Ctrl+A) and paste over it. The old card is already swapped out in this version.</li>
+      <li>Check <strong>Preview</strong>: one small block of added lines is healthy. <span class="warn">A block adding 200+ lines means the paste doubled the file &#8212; reload instead of committing.</span></li>
+      <li>Commit. Live in about a minute, then hard-refresh with Ctrl+Shift+R.</li>
+    </ol>
+  </div>
+</main>
+
+<script>
+(function(){
+  "use strict";
+
+  var FALLBACK_USED = ["f0/f1","f0/f3","f0/f6","f1/f4","f1/f5","f2/f0","f2/f1","f2/f3","f2/f5","f2/f6","f3/f0","f3/f1","f3/f5","f4/f0","f4/f1","f4/f2","f4/f3","f4/f6","f5/f2","f5/f4","f5/f6","f6/f0","f6/f1","f6/f3","f6/f5","f6/f6"];
+  var TOPFACE = {take:1, find:2, watch:3};
+  var MONTHS = ["JAN","FEB","MAR","APR","MAY","JUN","JUL","AUG","SEP","OCT","NOV","DEC"];
+
+  var stream = "find";
+  var used = new Set(FALLBACK_USED);
+  var chosen = null;
+  var live = false;
+  var mode = "add";        // "add" or "replace"
+  var view = "snippet";    // "snippet" or "file"
+  var rawIndex = null;     // source of the live index.html
+  var cards = [];          // cards found in it
+  var target = null;       // index of the card being replaced
+
+  var $ = function(id){ return document.getElementById(id); };
+
+  /* ---------- encoding: everything leaves as plain ASCII ---------- */
+  function enc(s){
+    if(!s) return "";
+    return String(s)
+      .replace(/&/g,"&amp;").replace(/</g,"&lt;").replace(/>/g,"&gt;")
+      .replace(/\u2018|\u2019/g,"'")
+      .replace(/\u201C|\u201D/g,"&quot;")
+      .replace(/"/g,"&quot;")
+      .replace(/[^\x00-\x7F]/g, function(c){ return "&#" + c.codePointAt(0) + ";"; });
+  }
+
+  function today(){
+    var d = new Date();
+    return d.getDate() + " " + MONTHS[d.getMonth()];
+  }
+
+  function slug(s){
+    return String(s || "").toLowerCase()
+      .replace(/[^a-z0-9]+/g,"-").replace(/^-+|-+$/g,"").slice(0,48) || "something";
+  }
+
+  function videoId(v){
+    v = String(v || "").trim();
+    if(!v) return "";
+    var m = v.match(/[?&]v=([\w-]{6,})/) || v.match(/youtu\.be\/([\w-]{6,})/) || v.match(/embed\/([\w-]{6,})/);
+    return m ? m[1] : (/^[\w-]{6,}$/.test(v) ? v : "");
+  }
+
+  function parseLinks(){
+    return $("links").value.split("\n").map(function(line){
+      var i = line.indexOf("|");
+      if(i < 0) return null;
+      var label = line.slice(0,i).trim(), url = line.slice(i+1).trim();
+      return (label && url) ? {label:label, url:url} : null;
+    }).filter(Boolean);
+  }
+
+  /* ---------- domino rack ---------- */
+  // the card being replaced gives its domino back
+  function recycled(){
+    return (mode === "replace" && target !== null && cards[target]) ? cards[target].pair : null;
+  }
+
+  function pairsFor(s){
+    var t = TOPFACE[s], out = [], back = recycled();
+    for(var b = 0; b <= 6; b++){
+      var p = "f" + t + "/f" + b;
+      if(!used.has(p) || p === back) out.push(p);
+    }
+    return out;
+  }
+
+  function tileHTML(pair, forStream){
+    var f = pair.split("/");
+    var st = forStream ? ' style="--accent:var(--' + forStream + ')"' : "";
+    return '<span class="tile"' + st + '><span class="face ' + f[0] + '"></span><span class="face ' + f[1] + '"></span></span>';
+  }
+
+  function dec(s){ var d = document.createElement("textarea"); d.innerHTML = s || ""; return d.value; }
+  function escHTML(s){ return String(s == null ? "" : s).replace(/&/g,"&amp;").replace(/</g,"&lt;").replace(/>/g,"&gt;"); }
+
+  /* ---------- read the existing cards out of index.html ---------- */
+  function parseCards(raw){
+    var openTag = '<div class="cards">';
+    var open = raw.indexOf(openTag);
+    if(open < 0) return [];
+    var end = raw.indexOf("</section>", open);
+    if(end < 0) end = raw.length;
+    var region = raw.slice(open, end);
+
+    var re = /[ \t]*<(a|article) class="card /g, m, starts = [];
+    while((m = re.exec(region))) starts.push(m.index);
+
+    return starts.map(function(s, i){
+      var e = (i + 1 < starts.length) ? starts[i + 1] : region.length;
+      var text = region.slice(s, e);
+      var faces = text.match(/class="face (f\d)"/g) || [];
+      // some existing cards have an unclosed <h4>, so stop at the next block tag too
+      var title = (text.match(/<h4[^>]*>([\s\S]*?)(?:<\/h4>|\n\s*<(?:p|div|\/article|\/a)\b)/) || [])[1] || "";
+      return {
+        absStart: open + s,
+        absEnd: open + e,
+        text: text,
+        stream: (text.match(/class="card (\w+)"/) || [])[1] || "find",
+        date: (text.match(/class="date">([^<]*)</) || [])[1] || "",
+        title: title.replace(/<[^>]+>/g, "").trim(),
+        pair: faces.length >= 2
+          ? faces[0].match(/f\d/)[0] + "/" + faces[1].match(/f\d/)[0]
+          : null
+      };
+    });
+  }
+
+  function renderCardList(){
+    var wrap = $("cardlist"), note = $("cardlist-note");
+    wrap.innerHTML = "";
+    if(!cards.length){
+      note.textContent = rawIndex
+        ? "No cards found in index.html."
+        : "Cannot read the homepage from a downloaded copy. Upload this page to the site to replace posts.";
+      return;
+    }
+    note.textContent = "Newest first, so the bottom one is the oldest.";
+    cards.forEach(function(c, i){
+      var b = document.createElement("button");
+      b.type = "button";
+      b.className = "cardpick";
+      b.setAttribute("aria-pressed", String(i === target));
+      b.innerHTML =
+        (c.pair ? tileHTML(c.pair, c.stream) : "") +
+        '<span><span class="meta">' + escHTML(dec(c.date)) + "</span>" +
+        '<span class="ttl">' + escHTML(dec(c.title) || "(untitled)") + "</span></span>" +
+        (i === cards.length - 1 ? '<span class="age">oldest</span>' : "");
+      b.addEventListener("click", function(){
+        target = (target === i) ? null : i;
+        chosen = null;
+        renderCardList();
+        drawRack();
+      });
+      wrap.appendChild(b);
+    });
+  }
+
+  function drawRack(){
+    var free = pairsFor(stream), rack = $("rack"), count = $("rack-count");
+    rack.innerHTML = "";
+    count.textContent = free.length + " left";
+    count.className = "count" + (free.length <= 2 ? " low" : "");
+
+    if(!free.length){
+      rack.innerHTML = '<p class="empty-rack">Every ' + stream + ' domino is taken. Reuse one from a card you have trimmed &#8212; the layout does not depend on it.</p>';
+      chosen = "f" + TOPFACE[stream] + "/f0";
+      render();
+      return;
+    }
+    if(free.indexOf(chosen) < 0) chosen = free[0];
+
+    free.forEach(function(p){
+      var b = document.createElement("button");
+      b.type = "button";
+      b.className = "pick";
+      b.setAttribute("aria-pressed", String(p === chosen));
+      b.setAttribute("aria-label", "Domino " + p.replace("/"," over ").replace(/f/g,""));
+      b.innerHTML = tileHTML(p);
+      b.addEventListener("click", function(){ chosen = p; drawRack(); });
+      rack.appendChild(b);
+    });
+    render();
+  }
+
+  function loadUsed(){
+    fetch("index.html?cb=" + Date.now(), {cache:"no-store"})
+      .then(function(r){ if(!r.ok) throw new Error("no"); return r.text(); })
+      .then(function(t){
+        var doc = new DOMParser().parseFromString(t, "text/html");
+        var tiles = doc.querySelectorAll(".tile");
+        if(!tiles.length) throw new Error("none");
+        var s = new Set();
+        Array.prototype.forEach.call(tiles, function(el){
+          var faces = el.querySelectorAll(".face");
+          if(faces.length < 2) return;
+          var a = (faces[0].className.match(/f\d/) || [])[0];
+          var b = (faces[1].className.match(/f\d/) || [])[0];
+          if(a && b) s.add(a + "/" + b);
+        });
+        used = s; live = true;
+        rawIndex = t;
+        cards = parseCards(t);
+        $("rack-note").textContent = "Read from the live homepage just now.";
+        renderCardList();
+        drawRack();
+      })
+      .catch(function(){
+        used = new Set(FALLBACK_USED); live = false;
+        rawIndex = null; cards = [];
+        $("rack-note").textContent = "Using the list from 25 Jul (could not reach the live page).";
+        renderCardList();
+        drawRack();
+      });
+  }
+
+  /* ---------- build the snippet ---------- */
+  function build(){
+    var head = $("headline").value.trim();
+    var links = parseLinks();
+    var vid = videoId($("video").value);
+    var imgName = $("imgname").value.trim();
+    var alt = $("alt").value.trim() || head;
+    var date = $("date").value.trim() || today();
+    var faces = (chosen || "f2/f0").split("/");
+    var pad = "        ";
+    var L = [];
+
+    var badge = pad + '<span class="badge"><span class="tile tile-sm" aria-hidden="true">'
+      + '<span class="face ' + faces[0] + '"></span><span class="face ' + faces[1] + '"></span></span></span>';
+    var dateLine = pad + '<span class="date">' + stream.toUpperCase() + " &#183; " + enc(date.toUpperCase()) + "</span>";
+
+    var imgTag = imgName
+      ? pad + '<img src="' + enc(imgName) + '" alt="' + enc(alt) + '" loading="lazy" style="width:100%;height:auto;border-radius:10px;margin:10px 0 0">'
+      : null;
+
+    var paras = $("body").value.split(/\n\s*\n/).map(function(p){ return p.trim(); }).filter(Boolean)
+      .map(function(p){ return pad + "<p>" + enc(p.replace(/\n/g," ")) + "</p>"; });
+
+    var linkLine = links.length
+      ? pad + '<p class="links">' + links.map(function(l){
+          return '<a href="' + enc(l.url) + '" target="_blank" rel="noopener">' + enc(l.label) + " &#8594;</a>";
+        }).join(" ") + "</p>"
+      : null;
+
+    if(stream === "take"){
+      var file = $("article").value.trim() || ("take-" + slug(head) + ".html");
+      L.push('      <a class="card take" href="' + enc(file) + '">');
+      L.push(badge);
+      L.push(dateLine);
+      if(imgTag) L.push(imgTag);
+      L.push(pad + "<h4>" + enc(head) + "</h4>");
+      paras.forEach(function(p){ L.push(p); });
+      L.push("      </a>");
+    } else if(stream === "watch"){
+      L.push('      <article class="card watch">');
+      L.push(badge);
+      L.push(dateLine);
+      if(vid){
+        L.push(pad + '<div class="embed"><iframe src="https://www.youtube-nocookie.com/embed/' + vid
+          + '" title="' + enc(head || "Video") + '" loading="lazy" allowfullscreen referrerpolicy="strict-origin-when-cross-origin"></iframe></div>');
+      }
+      L.push(pad + "<h4>" + enc(head) + "</h4>");
+      paras.forEach(function(p){ L.push(p); });
+      if(vid && !links.length){
+        L.push(pad + '<p class="links"><a href="https://www.youtube.com/watch?v=' + vid
+          + '" target="_blank" rel="noopener">watch on YouTube &#8594;</a></p>');
+      } else if(linkLine){ L.push(linkLine); }
+      L.push("      </article>");
+    } else {
+      L.push('      <article class="card find">');
+      L.push(badge);
+      L.push(dateLine);
+      if(imgTag) L.push(imgTag);
+      var h = links.length
+        ? pad + '<h4><a href="' + enc(links[0].url) + '" target="_blank" rel="noopener">' + enc(head) + "</a></h4>"
+        : pad + "<h4>" + enc(head) + "</h4>";
+      L.push(h);
+      paras.forEach(function(p){ L.push(p); });
+      if(linkLine) L.push(linkLine);
+      L.push("      </article>");
+    }
+    return L.join("\n");
+  }
+
+  /* ---------- preview ---------- */
+  function renderPreview(){
+    var head = $("headline").value.trim() || "Your headline";
+    var date = ($("date").value.trim() || today()).toUpperCase();
+    var links = parseLinks();
+    var vid = videoId($("video").value);
+    var imgName = $("imgname").value.trim();
+    var paras = $("body").value.split(/\n\s*\n/).map(function(p){ return p.trim(); }).filter(Boolean);
+    var pv = $("pv");
+    var h = "";
+
+    h += '<span class="pv-date">' + stream.toUpperCase() + " &#183; " + enc(date) + "</span>";
+    if(stream === "watch" && vid) h += '<div class="pv-embed">video ' + enc(vid) + "</div>";
+    if(imgName && stream !== "watch"){
+      h += window.__thumb
+        ? '<img class="pv-img" src="' + window.__thumb + '" alt="">'
+        : '<div class="pv-embed">' + enc(imgName) + "</div>";
+    }
+    h += '<h3 class="pv-h">' + enc(head) + "</h3>";
+    paras.forEach(function(p){ h += '<p class="pv-b">' + enc(p.replace(/\n/g," ")) + "</p>"; });
+    if(links.length){
+      h += '<p class="pv-links">' + links.map(function(l){ return enc(l.label) + " &#8594;"; }).join("&nbsp;&nbsp;") + "</p>";
+    } else if(stream === "watch" && vid){
+      h += '<p class="pv-links">watch on YouTube &#8594;</p>';
+    }
+    pv.innerHTML = h;
+
+    var t = chosen ? chosen.split("/") : ["f2","f0"];
+    pv.insertAdjacentHTML("beforeend",
+      '<div style="position:absolute;top:0;right:0">' +
+      '<span class="tile" style="width:22px;height:40px">' +
+      '<span class="face ' + t[0] + '"></span><span class="face ' + t[1] + '"></span></span></div>');
+  }
+
+  /* ---------- the whole index.html, with the card added or swapped ---------- */
+  function buildFile(){
+    if(!rawIndex) return null;
+    var snip = build();
+    if(mode === "replace"){
+      if(target === null || !cards[target]) return null;
+      var c = cards[target];
+      var trail = (c.text.match(/\s*$/) || [""])[0];
+      return rawIndex.slice(0, c.absStart) + snip + trail + rawIndex.slice(c.absEnd);
+    }
+    var openTag = '<div class="cards">';
+    var at = rawIndex.indexOf(openTag);
+    if(at < 0) return null;
+    at += openTag.length;
+    return rawIndex.slice(0, at) + "\n" + snip + "\n" + rawIndex.slice(at);
+  }
+
+  function currentText(){
+    if(view !== "file") return build();
+    var f = buildFile();
+    if(f) return f;
+    if(!rawIndex) return "Whole-file mode needs to read your live index.html.\n\nUpload this page to the site and open it there, or use the card snippet instead.";
+    return "Pick which card this replaces first.";
+  }
+
+  function render(){
+    var text = currentText();
+    $("out").textContent = text;
+    renderPreview();
+
+    var note = "";
+    if(view === "file" && rawIndex){
+      var built = buildFile();
+      if(built){
+        var before = (rawIndex.match(/class="card /g) || []).length;
+        var after = (built.match(/class="card /g) || []).length;
+        var opens = (built.match(/<article/g) || []).length;
+        var closes = (built.match(/<\/article>/g) || []).length;
+        note = before + " cards becomes " + after +
+               ". Tags balanced: " + opens + " article opens, " + closes + " closes." +
+               (opens === closes ? "" : "  <-- mismatch, do not commit");
+      }
+    } else if(view === "snippet" && mode === "replace" && target !== null && cards[target]){
+      note = "Replaces: " + dec(cards[target].title).slice(0, 60) +
+             ". Delete that card in index.html, then paste this in its place.";
+    }
+    $("out-note").textContent = note;
+
+    $("step-photo").classList.toggle("hidden", !$("imgname").value.trim());
+    $("step-article").classList.toggle("hidden", stream !== "take");
+    $("step-snippet").classList.toggle("hidden", view === "file");
+    $("step-file").classList.toggle("hidden", view !== "file");
+    $("copy").textContent = view === "file" ? "Copy whole file" : "Copy card";
+  }
+
+  function setMode(m){
+    mode = m;
+    if(m === "add") target = null;
+    Array.prototype.forEach.call(document.querySelectorAll(".modes button"), function(b){
+      b.setAttribute("aria-pressed", String(b.dataset.mode === m));
+    });
+    $("replace-panel").classList.toggle("hidden", m !== "replace");
+    if(m === "add" && view === "file" && !rawIndex) setView("snippet");
+    chosen = null;
+    renderCardList();
+    drawRack();
+  }
+
+  function setView(v){
+    view = v;
+    Array.prototype.forEach.call(document.querySelectorAll(".tab"), function(b){
+      b.setAttribute("aria-pressed", String(b.dataset.view === v));
+    });
+    render();
+  }
+
+  /* ---------- wiring ---------- */
+  function setStream(s){
+    stream = s;
+    document.documentElement.style.setProperty("--accent", "var(--" + s + ")");
+    Array.prototype.forEach.call(document.querySelectorAll(".streams button"), function(b){
+      b.setAttribute("aria-pressed", String(b.dataset.stream === s));
+    });
+    $("f-video").classList.toggle("hidden", s !== "watch");
+    $("f-article").classList.toggle("hidden", s !== "take");
+    $("f-alt").classList.toggle("hidden", s === "watch");
+
+    var l = $("links");
+    if(!l.value.trim() || l.dataset.auto === "1"){
+      l.value = s === "find" ? "read the review | " : (s === "watch" ? "" : "");
+      l.dataset.auto = "1";
+    }
+    l.placeholder = s === "find"
+      ? "read the review | https://...\nsearch Amazon | https://..."
+      : "label | https://...";
+    chosen = null;
+    drawRack();
+  }
+
+  Array.prototype.forEach.call(document.querySelectorAll(".streams button"), function(b){
+    b.addEventListener("click", function(){ setStream(b.dataset.stream); });
+  });
+  Array.prototype.forEach.call(document.querySelectorAll(".modes button"), function(b){
+    b.addEventListener("click", function(){ setMode(b.dataset.mode); });
+  });
+  Array.prototype.forEach.call(document.querySelectorAll(".tab"), function(b){
+    b.addEventListener("click", function(){ setView(b.dataset.view); });
+  });
+
+  ["headline","body","video","article","links","alt","imgname","date"].forEach(function(id){
+    $(id).addEventListener("input", function(){
+      if(id === "links") $("links").dataset.auto = "0";
+      if(id === "headline" && stream === "take" && !$("article").dataset.touched){
+        $("article").value = "take-" + slug($("headline").value) + ".html";
+      }
+      render();
+    });
+  });
+  $("article").addEventListener("input", function(){ $("article").dataset.touched = "1"; });
+
+  $("photo").addEventListener("change", function(e){
+    var f = e.target.files && e.target.files[0];
+    var info = $("photo-info");
+    if(!f){ info.textContent = ""; window.__thumb = null; render(); return; }
+    var kb = Math.round(f.size / 1024);
+    var clean = f.name.toLowerCase().replace(/[^a-z0-9.]+/g,"-").replace(/-+\./,".");
+    $("imgname").value = "images/" + clean;
+    if(!$("alt").value.trim()) $("alt").value = $("headline").value.trim();
+    info.innerHTML = kb + " KB" + (kb > 500
+      ? ' &#8212; <span class="warn">large for a web page. Resize to about 1200px wide before uploading.</span>'
+      : " &#8212; good size.");
+    var fr = new FileReader();
+    fr.onload = function(ev){ window.__thumb = ev.target.result; render(); };
+    fr.readAsDataURL(f);
+    render();
+  });
+
+  $("copy").addEventListener("click", function(){
+    var text = currentText(), btn = $("copy");
+    var label = view === "file" ? "Copy whole file" : "Copy card";
+    var done = function(){ btn.textContent = "Copied"; setTimeout(function(){ btn.textContent = label; }, 1600); };
+    if(navigator.clipboard && navigator.clipboard.writeText){
+      navigator.clipboard.writeText(text).then(done, fallback);
+    } else { fallback(); }
+    function fallback(){
+      var r = document.createRange(); r.selectNodeContents($("out"));
+      var s = window.getSelection(); s.removeAllRanges(); s.addRange(r);
+      try{ document.execCommand("copy"); done(); }
+      catch(err){ btn.textContent = "Select and copy"; }
+    }
+  });
+
+  $("reset").addEventListener("click", function(){
+    ["headline","body","video","article","alt","imgname"].forEach(function(id){ $(id).value = ""; });
+    $("photo").value = ""; $("photo-info").textContent = ""; window.__thumb = null;
+    $("article").dataset.touched = "";
+    $("date").value = today();
+    setStream(stream);
+  });
+
+  $("date").value = today();
+  setStream("find");
+  loadUsed();
+})();
+</script>
+</body>
+</html>
